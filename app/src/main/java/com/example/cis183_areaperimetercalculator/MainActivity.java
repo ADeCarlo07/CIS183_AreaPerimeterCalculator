@@ -40,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     ConstraintLayout cons_j_squareRefactView;
     Spinner sp_j_shapes;
     TextView tv_j_areaPerimeter;
+    EditText et_j_radius;
+    TextView tv_j_perimeterAreaCircle;
+
+    ConstraintLayout cont_j_circle;
 
     public ArrayAdapter spinnderAdaptor;
     @Override
@@ -53,11 +57,19 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        //Square rectangle
         et_j_length = findViewById(R.id.et_v_length);
         et_j_width = findViewById(R.id.et_v_width);
         cons_j_squareRefactView = findViewById(R.id.cons_v_squareRefactView);
         sp_j_shapes = findViewById(R.id.sp_v_shapes);
         tv_j_areaPerimeter = findViewById(R.id.tv_v_computedValues);
+
+        //Circle
+        et_j_radius = findViewById(R.id.et_v_radius);
+        tv_j_perimeterAreaCircle = findViewById(R.id.tv_v_computerAreaPerimeterCircle);
+        cont_j_circle = findViewById(R.id.cont_v_circle);
+
+
 
         //because we are using one spinner (drop down menu) that only contains strings
         //we can use a string array with the build in array adapter to populate
@@ -71,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         sp_j_shapes.setAdapter(spinnderAdaptor);
 
         setupSpinnerChangeListener();
+        textChangeListener();
         textChangeListenerSquareRect();
     }
 
@@ -86,17 +99,20 @@ public class MainActivity extends AppCompatActivity {
                     //Square
                     showConstraintView(cons_j_squareRefactView);
                     //not showing for circle and triangle
+                    hideConstraintView(cont_j_circle);
                 }
                 else if (position == 1)
                 {
                     //Rectangle
                     showConstraintView(cons_j_squareRefactView);
                     //not showing for circle and triangle
+                    hideConstraintView(cont_j_circle);
 
                 }
                 else if (position == 2)
                 {
                     //Circle
+                    showConstraintView(cont_j_circle);
 
                     //not showing for triangle or rectangle
                     hideConstraintView(cons_j_squareRefactView);
@@ -107,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
                     //not showing for circle or rectangle
                     hideConstraintView(cons_j_squareRefactView);
+                    hideConstraintView(cont_j_circle);
                 }
             }
 
@@ -179,5 +196,43 @@ public class MainActivity extends AppCompatActivity {
         double perimeter = length + length + width + width;
 
         tv_j_areaPerimeter.setText("Area = " + area + "\n Perimeter = " + perimeter);
+    }
+
+    public void textChangeListener()
+    {
+        et_j_radius.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                setAreaPerimeterCircle(et_j_radius.getText().toString());
+            }
+        });
+    }
+
+
+    public void setAreaPerimeterCircle(String radS)
+    {
+        if(radS.isEmpty())
+        {
+            return;
+        }
+
+        double rad = Double.parseDouble(radS);
+        double pi = Math.PI;
+        double area = pi * Math.pow(rad, 2);
+        double perimeter = 2 * pi * rad;
+
+        tv_j_perimeterAreaCircle.setText("Area = " + area + "\nPerimeter = " + perimeter);
+
     }
 }

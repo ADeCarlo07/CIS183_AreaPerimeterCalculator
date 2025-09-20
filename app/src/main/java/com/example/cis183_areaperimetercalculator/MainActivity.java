@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -17,8 +16,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-import kotlin._Assertions;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +42,15 @@ public class MainActivity extends AppCompatActivity {
 
     ConstraintLayout cont_j_circle;
 
+
+    ConstraintLayout cont_j_triangle;
+    TextView tv_j_areaPerimeterTriangle;
+    EditText et_j_sideA;
+    EditText et_j_sideB;
+    EditText et_j_sideC;
+    EditText et_j_heightT;
+
+
     public ArrayAdapter spinnderAdaptor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +75,16 @@ public class MainActivity extends AppCompatActivity {
         tv_j_perimeterAreaCircle = findViewById(R.id.tv_v_computerAreaPerimeterCircle);
         cont_j_circle = findViewById(R.id.cont_v_circle);
 
+        //Triangle
+        cont_j_triangle = findViewById(R.id.cons_v_triangle);
+        tv_j_areaPerimeterTriangle = findViewById(R.id.tv_v_computedAreaPerimeterTriangle);
+        et_j_sideA = findViewById(R.id.et_v_sideA);
+        et_j_sideB = findViewById(R.id.et_v_sideB);
+        et_j_sideC = findViewById(R.id.et_v_sideC);
+        et_j_heightT = findViewById(R.id.et_v_triangleHeight);
+
+
+
 
 
         //because we are using one spinner (drop down menu) that only contains strings
@@ -85,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         setupSpinnerChangeListener();
         textChangeListener();
         textChangeListenerSquareRect();
+        textChangeListenerTriangle();
     }
 
     public void setupSpinnerChangeListener()
@@ -100,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     showConstraintView(cons_j_squareRefactView);
                     //not showing for circle and triangle
                     hideConstraintView(cont_j_circle);
+                    hideConstraintView(cont_j_triangle);
                 }
                 else if (position == 1)
                 {
@@ -107,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
                     showConstraintView(cons_j_squareRefactView);
                     //not showing for circle and triangle
                     hideConstraintView(cont_j_circle);
+                    hideConstraintView(cont_j_triangle);
 
                 }
                 else if (position == 2)
@@ -116,11 +135,12 @@ public class MainActivity extends AppCompatActivity {
 
                     //not showing for triangle or rectangle
                     hideConstraintView(cons_j_squareRefactView);
+                    hideConstraintView(cont_j_triangle);
                 }
                 else if (position == 3)
                 {
                     //Triangle
-
+                    showConstraintView(cont_j_triangle);
                     //not showing for circle or rectangle
                     hideConstraintView(cons_j_squareRefactView);
                     hideConstraintView(cont_j_circle);
@@ -235,4 +255,90 @@ public class MainActivity extends AppCompatActivity {
         tv_j_perimeterAreaCircle.setText("Area = " + area + "\nPerimeter = " + perimeter);
 
     }
+
+    public void textChangeListenerTriangle()
+    {
+        et_j_heightT.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setAreaPerimeterTriangle(et_j_heightT.getText().toString(), et_j_sideA.getText().toString(), et_j_sideB.getText().toString(), et_j_sideC.getText().toString());
+            }
+        });
+        et_j_sideA.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setAreaPerimeterTriangle(et_j_heightT.getText().toString(), et_j_sideA.getText().toString(), et_j_sideB.getText().toString(), et_j_sideC.getText().toString());
+            }
+        });
+        et_j_sideB.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setAreaPerimeterTriangle(et_j_heightT.getText().toString(), et_j_sideA.getText().toString(), et_j_sideB.getText().toString(), et_j_sideC.getText().toString());
+            }
+        });
+
+        et_j_sideC.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setAreaPerimeterTriangle(et_j_heightT.getText().toString(), et_j_sideA.getText().toString(), et_j_sideB.getText().toString(), et_j_sideC.getText().toString());
+            }
+        });
+    }
+
+    public void setAreaPerimeterTriangle(String tHeightS, String sideAS, String sideBS, String sideCS)
+    {
+        if (tHeightS.isEmpty() || sideAS.isEmpty() || sideBS.isEmpty() || sideCS.isEmpty())
+        {
+            return;
+        }
+
+        double tHeight = Double.parseDouble(tHeightS);
+        double sideA = Double.parseDouble(sideAS);
+        double sideB = Double.parseDouble(sideBS);
+        double sideC = Double.parseDouble(sideCS);
+        double area = 0.5 * sideB * tHeight;
+        double perimeter = sideA + sideB + sideC;
+        tv_j_areaPerimeterTriangle.setText("Area = " + area + "\nPerimeter = " + perimeter);
+    }
+
 }
